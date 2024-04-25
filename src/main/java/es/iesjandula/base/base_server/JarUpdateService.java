@@ -65,6 +65,7 @@ public class JarUpdateService
     @Scheduled(fixedRate = 5000)
     public void checkJarUpdate()
     {
+    	// Comprobamos si es un JAR válido
     	if (this.jarValido)
     	{
 	    	File jarFile = new File(this.rutaAbsolutaAlJar) ;
