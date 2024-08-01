@@ -29,33 +29,81 @@ public class JarUpdateService
     public void init()
     {
     	// Obtenemos el nombre del archivo JAR en ejecución
-        this.rutaAbsolutaAlJar = JarUpdateService.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
-        // Si el JAR tiene prefijo "file:"
-        if (this.rutaAbsolutaAlJar.startsWith("file:"))
-        {
-        	// Lo eliminamos
-        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(5) ;
-        }
+        this.rutaAbsolutaAlJar = JarUpdateService.class.getProtectionDomain().getCodeSource().getLocation().getPath() ;
         
-        // Si el JAR tiene sufijo después de ".jar!"
-        if (this.rutaAbsolutaAlJar.contains(".jar!"))
-        {
-        	// Lo eliminamos
-        	int lastIndexOfJar = this.rutaAbsolutaAlJar.indexOf(".jar!") ;
-        	rutaAbsolutaAlJar  = this.rutaAbsolutaAlJar.substring(0, lastIndexOfJar + 4) ;
-        }
+        log.info("La ruta original del JAR es " + this.rutaAbsolutaAlJar) ;
+
+        // Eliminamos prefijos y sufijos innecesarios
+        this.eliminarPrefijosInnecesarios() ;
+        this.eliminarSufijosInnecesarios() ;
         
         log.info("El JAR está ubicado en {}", this.rutaAbsolutaAlJar) ;
         
-        File jarFile = new File(this.rutaAbsolutaAlJar);
+        File jarFile = new File(this.rutaAbsolutaAlJar) ;
         
         // Si el JAR definitivamente existe tendremos en cuenta este proceso
-        this.jarValido = jarFile.exists();
+        this.jarValido = jarFile.exists() ;
         
+        // Si el JAR es válido, hacemos la asignación de la última modificación
         if (this.jarValido)
         {
         	this.ultimaModificacionJar = jarFile.lastModified() ;
+        	
+        	log.info("Última modificación del JAR en el tiempo {}", this.ultimaModificacionJar) ;
+        }
+    }
+    
+    /**
+     * Eliminamos prefijos innecesarios
+     */
+    private void eliminarPrefijosInnecesarios()
+    {
+        // Si el JAR tiene prefijo "file:" ...
+        String pathParaEliminar = "file:" ;
+        if (this.rutaAbsolutaAlJar.startsWith(pathParaEliminar))
+        {
+        	// ... Lo eliminamos
+        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(pathParaEliminar.length()) ;
+        	
+        	log.warn("Se ha eliminado un sufijo que no nos interesa {} y ha quedado así finalmente: {}", pathParaEliminar, this.rutaAbsolutaAlJar) ;
+        }
+        
+        // Si el JAR tiene prefijo "nested:" ...
+        pathParaEliminar = "nested:" ;
+        if (this.rutaAbsolutaAlJar.startsWith(pathParaEliminar))
+        {
+        	// ... Lo eliminamos
+        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(pathParaEliminar.length()) ;
+        	
+        	log.warn("Se ha eliminado un sufijo que no nos interesa {} y ha quedado así finalmente: {}", pathParaEliminar, this.rutaAbsolutaAlJar) ;
+        }
+    }
+    
+    /**
+     * Eliminamos sufijos innecesarios
+     */
+    private void eliminarSufijosInnecesarios()
+    {
+        // Si el JAR tiene sufijo después de ".jar!" ...
+        String pathParaEliminar = ".jar!" ;
+        if (this.rutaAbsolutaAlJar.contains(pathParaEliminar))
+        {
+        	// ... Lo eliminamos
+        	int lastIndexOfJar 	   = this.rutaAbsolutaAlJar.indexOf(pathParaEliminar) ;
+        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(0, lastIndexOfJar) ;
+        	
+        	log.warn("Se ha eliminado un sufijo que no nos interesa {} y ha quedado así finalmente: {}", pathParaEliminar, this.rutaAbsolutaAlJar) ;
+        }
+        
+        // Si el JAR tiene sufijo de este tipo, lo quitamos: /!BOOT-INF/classes/!/ ...
+        pathParaEliminar = "/!BOOT-INF/classes/!/" ;
+        if (this.rutaAbsolutaAlJar.contains(pathParaEliminar))
+        {
+        	// ... Lo eliminamos
+        	int lastIndexOfJar 	   = this.rutaAbsolutaAlJar.indexOf(pathParaEliminar) ;
+        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(0, lastIndexOfJar) ;
+        	
+        	log.warn("Se ha eliminado un sufijo que no nos interesa {} y ha quedado así finalmente: {}", pathParaEliminar, this.rutaAbsolutaAlJar) ;
         }
     }
 
@@ -75,8 +123,8 @@ public class JarUpdateService
 	        {
 	        	log.info("¡El JAR ha sido actualizado! Finalizando la aplicación...") ;
 	
-	            // Salir de la aplicación
-	            System.exit(0) ;
+	        	// Cerramos esta aplicación
+	        	System.exit(0) ;
 	        }
     	}
     }
