@@ -89,19 +89,19 @@ public class JarUpdateService
         if (this.rutaAbsolutaAlJar.contains(pathParaEliminar))
         {
         	// ... Lo eliminamos
-        	int lastIndexOfJar 	   = this.rutaAbsolutaAlJar.indexOf(pathParaEliminar) ;
-        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(0, lastIndexOfJar) ;
+        	int indexOfJar 	   	   = this.rutaAbsolutaAlJar.indexOf(pathParaEliminar) ;
+        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(0, indexOfJar) ;
         	
         	log.warn("Se ha eliminado un sufijo que no nos interesa {} y ha quedado así finalmente: {}", pathParaEliminar, this.rutaAbsolutaAlJar) ;
         }
         
-        // Si el JAR tiene sufijo de este tipo, lo quitamos: /!BOOT-INF/classes/!/ ...
-        pathParaEliminar = "/!BOOT-INF/classes/!/" ;
+        // Si el JAR tiene sufijo de este tipo, lo quitamos: /!BOOT-INF ...
+        pathParaEliminar = "/!BOOT-INF" ;
         if (this.rutaAbsolutaAlJar.contains(pathParaEliminar))
         {
         	// ... Lo eliminamos
-        	int lastIndexOfJar 	   = this.rutaAbsolutaAlJar.indexOf(pathParaEliminar) ;
-        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(0, lastIndexOfJar) ;
+        	int indexOfJar 	   	   = this.rutaAbsolutaAlJar.indexOf(pathParaEliminar) ;
+        	this.rutaAbsolutaAlJar = this.rutaAbsolutaAlJar.substring(0, indexOfJar) ;
         	
         	log.warn("Se ha eliminado un sufijo que no nos interesa {} y ha quedado así finalmente: {}", pathParaEliminar, this.rutaAbsolutaAlJar) ;
         }
