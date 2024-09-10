@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.0.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<groupId>es.iesjandula.base</groupId>
 	<artifactId>BaseServer</artifactId>
 	<version>1.0.0</version>
-	
+
 	<name>BaseServer</name>
 	<description>Utilidades Base de los servidores Spring Boot</description>
-	
+
 	<properties>
 		<java.version>17</java.version>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -39,5 +40,46 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<!-- Dependencia de la API de JJWT -->
+	    <!-- Contiene las interfaces públicas y clases necesarias para trabajar con JWT -->
+	    <dependency>
+	        <groupId>io.jsonwebtoken</groupId>
+	        <artifactId>jjwt-api</artifactId>
+	        <version>0.12.6</version>
+	    </dependency>
+	    
+	    <!-- Dependencia de la implementación de JJWT -->
+	    <!-- Proporciona las implementaciones de las interfaces de JJWT. 
+	         Marcada como 'runtime' porque solo se necesita en tiempo de ejecución. -->
+	    <dependency>
+	        <groupId>io.jsonwebtoken</groupId>
+	        <artifactId>jjwt-impl</artifactId>
+	        <version>0.12.6</version>
+	        <scope>runtime</scope>
+	    </dependency>
+	    
+	    <!-- Dependencia de Jackson para JJWT -->
+	    <!-- Utiliza Jackson para manejar la serialización y deserialización de JSON. 
+	         Marcada como 'runtime' porque solo se necesita en tiempo de ejecución. -->
+	    <dependency>
+	        <groupId>io.jsonwebtoken</groupId>
+	        <artifactId>jjwt-jackson</artifactId>
+	        <version>0.12.6</version>
+	        <scope>runtime</scope>
+	    </dependency>
+	
+	    <!-- Dependencia de JAXB (Java Architecture for XML Binding) -->
+	    <!-- Proporciona clases para la codificación y decodificación de Base64.
+	         Útil para proyectos que se ejecutan en versiones de Java 9 o superiores. -->
+	    <dependency>
+	        <groupId>javax.xml.bind</groupId>
+	        <artifactId>jaxb-api</artifactId>
+	        <version>2.3.1</version>
+	    </dependency>
+
 	</dependencies>
 </project>

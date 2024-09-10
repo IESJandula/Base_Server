@@ -1,4 +1,4 @@
-package es.iesjandula.base.base_server;
+package es.iesjandula.base.base_server.services;
 
 import java.io.File;
 
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author Francisco Manuel Benítez Chico
+ */
 @Service
 @Configuration
 @EnableScheduling
