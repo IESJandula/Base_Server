@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.4</version>
+		<version>3.2.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -81,5 +81,11 @@
 	        <version>2.3.1</version>
 	    </dependency>
 
+		<!-- Dependencia de Apache HttpClient para hacer peticiones al servidor -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.14</version>
+		</dependency>
 	</dependencies>
 </project>

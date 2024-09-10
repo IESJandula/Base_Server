@@ -10,13 +10,16 @@ public class BaseServerConstants
 	/*********************************************************/
 	
 	/** Error - Excepción genérica - Código */
-	public static final int ERR_GENERIC_EXCEPTION_CODE 	 = 0 ;
+	public static final int ERR_GENERIC_EXCEPTION_CODE 	 		= 0 ;
 	
 	/** Error - Excepción genérica - Mensaje */
-	public static final String ERR_GENERIC_EXCEPTION_MSG = "Excepción genérica en " ;
+	public static final String ERR_GENERIC_EXCEPTION_MSG 		= "Excepción genérica en " ;
 	
 	/** Error - Error mientras se obtenía la clave pública */
-	public static final int ERR_GETTING_PUBLIC_KEY	 	 = 1 ;
+	public static final int ERR_GETTING_PUBLIC_KEY	 	 		= 1 ;
+	
+	/** Error - Error mientras se obtenía el token personalizado JWT */
+	public static final int ERR_GETTING_PERSONALIZED_TOKEN_JWT = 2 ;
 	
 	
 	/*********************************************************/
@@ -32,11 +35,22 @@ public class BaseServerConstants
 	/*********************************************************/
 	
 	/** Role - Administrador */
-	public static final String ROLE_ADMINISTRADOR = "ADMINISTRADOR" ;
+	public static final String ROLE_ADMINISTRADOR 	  = "ADMINISTRADOR" ;
 	
 	/** Role - Profesor */
-	public static final String ROLE_PROFESOR 	  = "PROFESOR" ;
+	public static final String ROLE_PROFESOR 	  	  = "PROFESOR" ;
 	
 	/** Role - Dirección */
-	public static final String ROLE_DIRECCION 	  = "DIRECCION" ;
+	public static final String ROLE_DIRECCION 	  	  = "DIRECCION" ;
+	
+	/** Role - Cliente impresora */
+	public static final String ROLE_CLIENTE_IMPRESORA = "CLIENTE_IMPRESORA" ;
+	
+	
+	/*********************************************************/
+	/********************** Firebase *************************/
+	/*********************************************************/
+	
+	/** Firebase - UID */
+	public static final String FIREBASE_UID 	  = "uid" ;
 }
