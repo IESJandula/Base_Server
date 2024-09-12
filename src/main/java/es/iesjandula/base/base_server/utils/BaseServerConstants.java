@@ -19,7 +19,10 @@ public class BaseServerConstants
 	public static final int ERR_GETTING_PUBLIC_KEY	 	 		= 1 ;
 	
 	/** Error - Error mientras se obtenía el token personalizado JWT */
-	public static final int ERR_GETTING_PERSONALIZED_TOKEN_JWT = 2 ;
+	public static final int ERR_GETTING_PERSONALIZED_TOKEN_JWT  = 2 ;
+	
+	/** Error - Error mientras se manejaban los recursos */
+	public static final int EXC_ERR_CODE_RESOURCES_HANDLER 		= 3 ;
 	
 	
 	/*********************************************************/
