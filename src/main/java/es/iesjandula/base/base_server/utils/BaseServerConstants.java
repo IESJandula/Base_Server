@@ -29,8 +29,17 @@ public class BaseServerConstants
 	/**************** Colección - Usuarios *******************/
 	/*********************************************************/
 	
+	/** Collection Usuarios - Attribute Email */
+	public static final String COLLECTION_USUARIOS_ATTRIBUTE_EMAIL     = "email" ;
+	
+	/** Collection Usuarios - Attribute Nombre */
+	public static final String COLLECTION_USUARIOS_ATTRIBUTE_NOMBRE    = "nombre" ;
+	
+	/** Collection Usuarios - Attribute Apellidos */
+	public static final String COLLECTION_USUARIOS_ATTRIBUTE_APELLIDOS = "apellidos" ;
+	
 	/** Collection Usuarios - Attribute Roles */
-	public static final String COLLECTION_USUARIOS_ATTRIBUTE_ROLES = "roles" ;
+	public static final String COLLECTION_USUARIOS_ATTRIBUTE_ROLES 	   = "roles" ;
 	
 	
 	/*********************************************************/

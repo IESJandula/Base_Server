@@ -115,8 +115,9 @@ public class AuthorizationService
 	/**
 	 * @param authorizationHeader authorization header (jwt)
 	 * @param roleRequerido role requerido
+	 * @return el usuario encontrado
 	 */
-	public void autorizarPeticion(String authorizationHeader, String roleRequerido) throws BaseServerException
+	public Usuario autorizarPeticion(String authorizationHeader, String roleRequerido) throws BaseServerException
 	{
 	    // Elimina el prefijo "Bearer " del encabezado de autorización para obtener el token JWT limpio
 	    String token = authorizationHeader.replace("Bearer ", "") ;
@@ -138,6 +139,14 @@ public class AuthorizationService
 	        log.error(errorString) ;
 	        throw new BaseServerException(BaseServerConstants.ERR_GETTING_PUBLIC_KEY, errorString) ;
 	    }
+	    
+	    // Recogemos el resto de valores
+	    String email     = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_EMAIL) ;
+	    String nombre    = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_NOMBRE) ;
+	    String apellidos = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_APELLIDOS) ;
+	    
+	    // Devolvemos la instancia del usuario
+	    return new Usuario(email, nombre, apellidos, roles) ;
 	}
 	
 	/**
