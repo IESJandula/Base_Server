@@ -117,20 +117,20 @@ public class AuthorizationService
 	 * @param roleRequerido role requerido
 	 * @return el usuario encontrado
 	 */
-	public Usuario autorizarPeticion(String authorizationHeader, String roleRequerido) throws BaseServerException
+	public DtoUsuario autorizarPeticion(String authorizationHeader, String roleRequerido) throws BaseServerException
 	{
-	    // Elimina el prefijo "Bearer " del encabezado de autorización para obtener el token JWT limpio
+	    // Eliminamos el prefijo "Bearer " del encabezado de autorización para obtener el token JWT limpio
 	    String token = authorizationHeader.replace("Bearer ", "") ;
 
-	    // Parsea y verifica el token JWT utilizando la clave pública y obtiene los claims
+	    // Parseamos y verificamos el token JWT utilizando la clave pública y obtiene los claims
 	    Claims claims = this.jwtParser.parseSignedClaims(token) // Parsea el JWT firmado y verifica su firma
 	                        		  .getPayload() ; 			// Obtiene el cuerpo (claims) del JWT
 	    
-	    // Extrae los roles del usuario desde los claims obtenidos
+	    // Extraemos los roles del usuario desde los claims obtenidos
 	    @SuppressWarnings("unchecked")
 		List<String> roles = (List<String>) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_ROLES) ;
 
-	    // Verifica si el usuario tiene el rol requerido para acceder al recurso
+	    // Verificamos si el usuario tiene el rol requerido para acceder al recurso
 	    if (!roles.contains(roleRequerido))
 	    {
 	        // Si el usuario no tiene el rol requerido, prepara un mensaje de error
@@ -146,7 +146,7 @@ public class AuthorizationService
 	    String apellidos = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_APELLIDOS) ;
 	    
 	    // Devolvemos la instancia del usuario
-	    return new Usuario(email, nombre, apellidos, roles) ;
+	    return new DtoUsuario(email, nombre, apellidos, roles) ;
 	}
 	
 	/**
@@ -169,7 +169,7 @@ public class AuthorizationService
 		    try
 		    {
 			    // Creamos una solicitud HTTP POST a nuestro microservicio Firebase
-			    HttpPost postRequest = new HttpPost(this.firebaseServerUrl + "/firebase/getCustomToken") ;
+			    HttpPost postRequest = new HttpPost(this.firebaseServerUrl + "/firebase/jwt/getCustomToken") ;
 		    	
 			    // Añadimos el UID al encabezado de la solicitud con el valor del fichero
 			    postRequest.addHeader(BaseServerConstants.FIREBASE_UID, Files.readString(Paths.get(this.uidFile)).trim()) ;

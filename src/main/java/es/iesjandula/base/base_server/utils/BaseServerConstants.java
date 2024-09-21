@@ -1,5 +1,9 @@
 package es.iesjandula.base.base_server.utils;
 
+import java.util.List;
+
+import io.jsonwebtoken.lang.Arrays;
+
 /**
  * @author Francisco Manuel Benítez Chico
  */
@@ -28,6 +32,12 @@ public class BaseServerConstants
 	/*********************************************************/
 	/**************** Colección - Usuarios *******************/
 	/*********************************************************/
+	
+	/** Collection name - Usuarios */
+	public static final String COLLECTION_NAME_USUARIOS 			   = "usuarios";
+	
+	/** Collection Usuarios - Attribute UID */
+	public static final String COLLECTION_USUARIOS_ATTRIBUTE_UID  	   = "uid" ;
 	
 	/** Collection Usuarios - Attribute Email */
 	public static final String COLLECTION_USUARIOS_ATTRIBUTE_EMAIL     = "email" ;
@@ -58,6 +68,11 @@ public class BaseServerConstants
 	/** Role - Cliente impresora */
 	public static final String ROLE_CLIENTE_IMPRESORA = "CLIENTE_IMPRESORA" ;
 	
+	/** Lista de roles permitidos */
+	public static final List<String> ROLES_LIST		  = Arrays.asList(new String[] { ROLE_ADMINISTRADOR,
+																					 ROLE_PROFESOR,
+																					 ROLE_DIRECCION,
+																					 ROLE_CLIENTE_IMPRESORA }) ;
 	
 	/*********************************************************/
 	/********************** Firebase *************************/

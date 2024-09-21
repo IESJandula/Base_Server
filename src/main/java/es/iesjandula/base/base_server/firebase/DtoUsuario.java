@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Usuario
+public class DtoUsuario
 {
 	/** Atributo - email */
 	private String email ;
