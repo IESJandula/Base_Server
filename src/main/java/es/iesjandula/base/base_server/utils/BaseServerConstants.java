@@ -28,6 +28,12 @@ public class BaseServerConstants
 	/** Error - Error mientras se manejaban los recursos */
 	public static final int EXC_ERR_CODE_RESOURCES_HANDLER 		= 3 ;
 	
+	/** Error - Error usuario no autenticado */
+	public static final int ERR_USER_NOT_AUTHENTICATED 			= 4 ; 
+	
+	/** Error - Error usuario no autenticado - Mensaje */
+	public static final String ERR_USER_NOT_AUTHENTICATED_MSG   = "Usuario no autenticado" ;
+	
 	
 	/*********************************************************/
 	/**************** Colección - Usuarios *******************/

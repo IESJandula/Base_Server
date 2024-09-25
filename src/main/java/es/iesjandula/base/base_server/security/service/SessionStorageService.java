@@ -1,4 +1,4 @@
-package es.iesjandula.base.base_server.firebase;
+package es.iesjandula.base.base_server.security.service;
 
 import org.springframework.stereotype.Component;
 
