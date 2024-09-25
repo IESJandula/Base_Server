@@ -1,4 +1,4 @@
-package es.iesjandula.base.base_server.firebase ;
+package es.iesjandula.base.base_server.security.service ;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import es.iesjandula.base.base_server.security.models.DtoUsuario;
 import es.iesjandula.base.base_server.utils.BaseServerConstants;
 import es.iesjandula.base.base_server.utils.BaseServerException;
 import io.jsonwebtoken.Claims;
@@ -114,37 +115,26 @@ public class AuthorizationService
 	
 	/**
 	 * @param authorizationHeader authorization header (jwt)
-	 * @param roleRequerido role requerido
 	 * @return el usuario encontrado
 	 */
-	public DtoUsuario autorizarPeticion(String authorizationHeader, String roleRequerido) throws BaseServerException
+	public DtoUsuario obtenerUsuario(String authorizationHeader)
 	{
 	    // Eliminamos el prefijo "Bearer " del encabezado de autorización para obtener el token JWT limpio
-	    String token = authorizationHeader.replace("Bearer ", "") ;
+	    String token = authorizationHeader.substring(7) ;
 
 	    // Parseamos y verificamos el token JWT utilizando la clave pública y obtiene los claims
 	    Claims claims = this.jwtParser.parseSignedClaims(token) // Parsea el JWT firmado y verifica su firma
 	                        		  .getPayload() ; 			// Obtiene el cuerpo (claims) del JWT
 	    
+	    // Recogemos el resto de valores
+	    String email       = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_EMAIL) ;
+	    String nombre      = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_NOMBRE) ;
+	    String apellidos   = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_APELLIDOS) ;
+	    
 	    // Extraemos los roles del usuario desde los claims obtenidos
 	    @SuppressWarnings("unchecked")
-		List<String> roles = (List<String>) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_ROLES) ;
+	    List<String> roles = (List<String>) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_ROLES) ;
 
-	    // Verificamos si el usuario tiene el rol requerido para acceder al recurso
-	    if (!roles.contains(roleRequerido))
-	    {
-	        // Si el usuario no tiene el rol requerido, prepara un mensaje de error
-	        String errorString = "El usuario no tiene el role de " + roleRequerido + " para acceder al recurso" ;
-	        
-	        log.error(errorString) ;
-	        throw new BaseServerException(BaseServerConstants.ERR_GETTING_PUBLIC_KEY, errorString) ;
-	    }
-	    
-	    // Recogemos el resto de valores
-	    String email     = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_EMAIL) ;
-	    String nombre    = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_NOMBRE) ;
-	    String apellidos = (String) claims.get(BaseServerConstants.COLLECTION_USUARIOS_ATTRIBUTE_APELLIDOS) ;
-	    
 	    // Devolvemos la instancia del usuario
 	    return new DtoUsuario(email, nombre, apellidos, roles) ;
 	}
