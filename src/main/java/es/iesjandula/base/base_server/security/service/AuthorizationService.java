@@ -147,13 +147,12 @@ public class AuthorizationService
 	 */
 	public String obtenerTokenPersonalizado() throws BaseServerException
 	{
-		CloseableHttpClient httpClient = HttpClients.createDefault() ;
-		
-	    // Verificar si ya tenemos un token en "sesión"
+	    // Verificamos si ya tenemos un token en "sesión"
 		String token = this.sessionStorageService.getToken() ;
 
 		if (token == null || this.tokenExpirado(token))
 		{
+			CloseableHttpClient httpClient 				= HttpClients.createDefault() ;
 		    CloseableHttpResponse closeableHttpResponse = null ;
 
 		    try
@@ -208,6 +207,19 @@ public class AuthorizationService
 		    	        throw new BaseServerException(BaseServerConstants.ERR_GETTING_PERSONALIZED_TOKEN_JWT, errorString, ioException) ;
 					}
 		    	}
+		    	
+				try
+				{
+					// Cerramos el CloseableHttpClient
+					httpClient.close() ;
+				}
+				catch (IOException ioException)
+				{
+					String errorString = "Error al cerrar CloseableHttpClient: " + ioException.getMessage() ;
+					
+					log.error(errorString, ioException) ;
+	    	        throw new BaseServerException(BaseServerConstants.ERR_GETTING_PERSONALIZED_TOKEN_JWT, errorString, ioException) ;
+				}
 		    }
 		}
 		
