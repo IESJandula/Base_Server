@@ -1,6 +1,7 @@
 package es.iesjandula.base.base_server.security.service ;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.KeyFactory;
@@ -14,8 +15,8 @@ import java.util.List;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import es.iesjandula.base.base_server.security.models.DtoUsuario;
 import es.iesjandula.base.base_server.utils.BaseServerConstants;
 import es.iesjandula.base.base_server.utils.BaseServerException;
+import es.iesjandula.base.base_server.utils.HttpClientUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -142,17 +144,18 @@ public class AuthorizationService
 	/**
 	 * Realiza una solicitud HTTP POST al otro microservicio para obtener un token personalizado
 	 *
+	 * @param timeout
 	 * @return El token JWT obtenido del microservicio
 	 * @throws BaseServerException error al obtener el token
 	 */
-	public String obtenerTokenPersonalizado() throws BaseServerException
+	public String obtenerTokenPersonalizado(int timeout) throws BaseServerException
 	{
 	    // Verificamos si ya tenemos un token en "sesión"
 		String token = this.sessionStorageService.getToken() ;
 
 		if (token == null || this.tokenExpirado(token))
 		{
-			CloseableHttpClient httpClient 				= HttpClients.createDefault() ;
+			CloseableHttpClient closeableHttpClient 	= HttpClientUtils.crearHttpClientConTimeout(timeout) ;
 		    CloseableHttpResponse closeableHttpResponse = null ;
 
 		    try
@@ -164,7 +167,7 @@ public class AuthorizationService
 			    postRequest.addHeader(BaseServerConstants.FIREBASE_UID, Files.readString(Paths.get(this.uidFile)).trim()) ;
 		    	
 		        // Ejecutamos la solicitud HTTP
-		        closeableHttpResponse = httpClient.execute(postRequest) ;
+		        closeableHttpResponse = closeableHttpClient.execute(postRequest) ;
 
 		        // Verificamos el estado de la respuesta HTTP
 		        int statusCode = closeableHttpResponse.getStatusLine().getStatusCode() ;
@@ -184,6 +187,20 @@ public class AuthorizationService
 	            // Almacenar el nuevo token en la "sesión"
 	            this.sessionStorageService.setToken(token) ;
 		    }
+			catch (SocketTimeoutException socketTimeoutException)
+			{
+				String errorString = "SocketTimeoutException de lectura o escritura al comunicarse con el servidor (token JWT)" ;
+				
+				log.error(errorString, socketTimeoutException) ;
+				throw new BaseServerException(BaseServerConstants.ERR_GETTING_PERSONALIZED_TOKEN_JWT, errorString, socketTimeoutException) ;
+	        }
+			catch (ConnectTimeoutException connectTimeoutException)
+			{
+				String errorString = "ConnectTimeoutException al intentar conectar con el servidor (token JWT)" ;
+				
+				log.error(errorString, connectTimeoutException) ;
+				throw new BaseServerException(BaseServerConstants.ERR_GETTING_PERSONALIZED_TOKEN_JWT, errorString, connectTimeoutException) ;
+	        }
 		    catch (IOException ioException)
 		    {
 		        String errorString = "IOException mientras se obtenía el token JWT del servidor" ;
@@ -211,7 +228,7 @@ public class AuthorizationService
 				try
 				{
 					// Cerramos el CloseableHttpClient
-					httpClient.close() ;
+					closeableHttpClient.close() ;
 				}
 				catch (IOException ioException)
 				{
